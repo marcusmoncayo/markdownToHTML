@@ -7,7 +7,7 @@ Markdown support for Header, Paragraph, and Anchor Tags.
 - Php
 - Composer
 
-## Setup:
+## Setup
 - Extract zip file.
 - Open terminal and navigate to root directory.
 - run command ```composer install```
