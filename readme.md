@@ -5,7 +5,7 @@ Markdown support for Header, Paragraph, and Anchor Tags.
 
 ## Requirements
 - Homebrew ```/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"```
-- Php ```brew install php```
+- Php ```brew install php``` (Optional should be handled by Composer)
 - Composer ```brew install composer```
 - Symfony ```brew install symfony-cli/tap/symfony-cli```
 
