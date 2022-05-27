@@ -3,6 +3,10 @@
 The following repo is a light weight Symfony api service created for converting Markdown to HTML.
 Markdown support for Header, Paragraph, and Anchor Tags.
 
+## Requirements
+- Php
+- Composer
+
 ## Setup:
 - Extract zip file.
 - Open terminal and navigate to root directory.
