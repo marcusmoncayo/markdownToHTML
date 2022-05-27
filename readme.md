@@ -1,4 +1,4 @@
-# mailchimp Markdown Converter
+# Markdown Converter
 
 The following repo is a light weight Symfony api service created for converting Markdown to HTML.
 Markdown support for Header, Paragraph, and Anchor Tags.
