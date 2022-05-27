@@ -10,8 +10,8 @@ Markdown support for Header, Paragraph, and Anchor Tags.
 - Symfony ```brew install symfony-cli/tap/symfony-cli```
 
 ## Setup
-- Extract zip file.
-- Open terminal and navigate to root directory.
+- Clone Repo
+- Open terminal and navigate to root directory
 - run command ```composer install```
 - start service ``` symfony server:start```
 
