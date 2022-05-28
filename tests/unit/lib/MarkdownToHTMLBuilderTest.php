@@ -22,10 +22,10 @@ final class MarkdownToHTMLBuilderTest extends TestCase
         return [
         "test case 1" =>
         [
-        "# Sample Document\nHello!\n\nThis is sample markdown for the [Mailchimp](https://www.mailchimp.com)homework assignment.",
+        "# Sample Document" . '\n' . "Hello!" . '\n' . '\n' . "This is sample markdown for the [Mailchimp](https://www.mailchimp.com)homework assignment.",
         "<h1>Sample Document</h1><p>Hello!</p><p>This is sample markdown for the <a href=\"https://www.mailchimp.com\">Mailchimp</a>homework assignment.</p>"
         ],
-        "test case 2" => [ "# Header one\nHello there \n\nHow are you?\nWhat's going on?\n## Another Header\nThis is a paragraph [with an inline link](http://google.com). Neat, eh?\n## This is a header [with a link](http://yahoo.com)",
+        "test case 2" => [ "# Header one" . '\n' . "Hello there " . '\n' . '\n' . "How are you?" . '\n' . "What's going on?" . '\n' . "## Another Header" . '\n' . "This is a paragraph [with an inline link](http://google.com). Neat, eh?" . '\n' . "## This is a header [with a link](http://yahoo.com)",
         "<h1>Header one</h1><p>Hello there </p><p>How are you?<br/>What's going on?</p><h2>Another Header</h2><p>This is a paragraph <a href=\"http://google.com\">with an inline link</a>. Neat, eh?</p><h2>This is a header <a href=\"http://yahoo.com\">with a link</a></h2>"
         ]
         ];
@@ -65,10 +65,10 @@ final class MarkdownToHTMLBuilderTest extends TestCase
         "header" => ["# this is a header", "<h1>this is a header</h1>"],
         "anchor" => ["[somewhere](www.somewhere.com)", "<a href=\"www.somewhere.com\">somewhere</a>"],
         "paragraph with anchor" =>["this is a paragraph with an [Anchor](www.somewhere.com)", "<p>this is a paragraph with an <a href=\"www.somewhere.com\">Anchor</a></p>"],
-        "paragraph with new line" => ["this is a paragraph \n with a new line", "<p>this is a paragraph <br/> with a new line</p>"],
-        "paragraph with new line" => ["this is a paragraph\nwith a new line", "<p>this is a paragraph<br/>with a new line</p>"],
-        "paragraph with two new lines" => ["this is a paragraph\n\nwith a new line", "<p>this is a paragraph</p><p>with a new line</p>"],
-        "paragraph with three new lines" => ["this is a paragraph\n\n\nwith a new line", "<p>this is a paragraph</p><p>with a new line</p>"],
+        "paragraph with new line" => ["this is a paragraph " . '\n' . " with a new line", "<p>this is a paragraph <br/> with a new line</p>"],
+        "paragraph with new line" => ["this is a paragraph" . '\n' . "with a new line", "<p>this is a paragraph<br/>with a new line</p>"],
+        "paragraph with two new lines" => ["this is a paragraph" . '\n' . '\n' . "with a new line", "<p>this is a paragraph</p><p>with a new line</p>"],
+        "paragraph with three new lines" => ["this is a paragraph" . '\n' . '\n' . '\n' . "with a new line", "<p>this is a paragraph</p><p>with a new line</p>"],
         "blank line" => ["", ""],
         "double anchor" => ["this [is](one anchor) and this [is](another)","<p>this <a href=\"one anchor\">is</a> and this <a href=\"another\">is</a></p>"]
         ];
@@ -76,7 +76,7 @@ final class MarkdownToHTMLBuilderTest extends TestCase
 
     public function testConverterMergeTags(): void
     {
-        $input = "this is the first paragraph\nthis is the second paragraph";
+        $input = "this is the first paragraph" . '\n' . "this is the second paragraph";
 
         $expected = "<p>this is the first paragraph<br/>this is the second paragraph</p>";
 

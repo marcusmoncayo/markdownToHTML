@@ -8,7 +8,7 @@ class MarkdownToHTMLBuilder
 {
 
     const SKIP = "***SKIP***";
-    const NEW_LINE = "\n";
+    const NEW_LINE = '\n';
 
     private array $startTags = [HeaderTag::class];
     private array $innerTags = [ParagraphTag::class,AnchorTag::class];
