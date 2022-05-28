@@ -33,8 +33,8 @@ final class MarkdownToHTMLBuilderTest extends TestCase
                 ],
             "Header with Anchor with Strong" =>
                 [
-                   "# this is a header with [a link ***and strong tag***](link.com)",
-                    "<h1>this is a header with <a href=\"link.com\">a link <strong><em>and strong tag</em></strong></a></h1>"
+                   "# this is a ***strong tag*** header with [a link ***and strong tag***](link.com)",
+                    "<h1>this is a <strong><em>strong tag</em></strong> header with <a href=\"link.com\">a link <strong><em>and strong tag</em></strong></a></h1>"
                 ]
         ];
     }

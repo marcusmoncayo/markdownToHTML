@@ -74,7 +74,7 @@ class MarkdownToHTMLBuilder
             return $tag;
         }
 
-      // validate and update the markdown for all the inner tags
+        // validate and update the markdown for all the inner tags
         foreach ($tag->getValidInnerTags() as $innerTagClass) {
             // exclude the markdown from the parent tag
             $innerTag = new $innerTagClass($tag->getContent());
