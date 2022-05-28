@@ -1,5 +1,4 @@
 <?php
-
   namespace App\lib;
 
   use Exception;

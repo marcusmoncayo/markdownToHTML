@@ -90,9 +90,9 @@ final class AnchorTagTest extends TestCase
     public function getHTMLRepresentationData(): array
     {
         return [
-        "valid anchor tag with url" => ["[A link](alink.com)", "<a href=\"alink.com\">A link</a>"],
-        "valid anchor tag no url" => ["[A link]()", "<a href=\"\">A link</a>"],
-        "valid anchor tag with random alpha numeric" => ["[A link](asdf1234)", "<a href=\"asdf1234\">A link</a>"]
+            "valid anchor tag with url" => ["[A link](alink.com)", "<a href=\"alink.com\">A link</a>"],
+            "valid anchor tag no url" => ["[A link]()", "<a href=\"\">A link</a>"],
+            "valid anchor tag with random alpha numeric" => ["[A link](asdf1234)", "<a href=\"asdf1234\">A link</a>"]
         ];
     }
 }
