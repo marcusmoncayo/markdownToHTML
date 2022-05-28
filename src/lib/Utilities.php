@@ -10,6 +10,6 @@ class Utilities
 
     public static function getAllTagClasses(): array
     {
-        return [HeaderTag::class, AnchorTag::class, ParagraphTag::class];
+        return [HeaderTag::class, AnchorTag::class, ParagraphTag::class, StrongTagClass::class];
     }
 }

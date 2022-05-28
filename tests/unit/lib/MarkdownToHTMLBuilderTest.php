@@ -6,6 +6,7 @@ use App\lib\HeaderTag;
 use App\lib\AnchorTag;
 use App\lib\ParagraphTag;
 
+
 final class MarkdownToHTMLBuilderTest extends TestCase
 {
   /**
@@ -20,14 +21,21 @@ final class MarkdownToHTMLBuilderTest extends TestCase
     public function mailchimpTestCases(): array
     {
         return [
-        "test case 1" =>
-        [
-        "# Sample Document" . '\n' . "Hello!" . '\n' . '\n' . "This is sample markdown for the [Mailchimp](https://www.mailchimp.com)homework assignment.",
-        "<h1>Sample Document</h1><p>Hello!</p><p>This is sample markdown for the <a href=\"https://www.mailchimp.com\">Mailchimp</a>homework assignment.</p>"
-        ],
-        "test case 2" => [ "# Header one" . '\n' . "Hello there " . '\n' . '\n' . "How are you?" . '\n' . "What's going on?" . '\n' . "## Another Header" . '\n' . "This is a paragraph [with an inline link](http://google.com). Neat, eh?" . '\n' . "## This is a header [with a link](http://yahoo.com)",
-        "<h1>Header one</h1><p>Hello there </p><p>How are you?<br/>What's going on?</p><h2>Another Header</h2><p>This is a paragraph <a href=\"http://google.com\">with an inline link</a>. Neat, eh?</p><h2>This is a header <a href=\"http://yahoo.com\">with a link</a></h2>"
-        ]
+            "test case 1" =>
+                [
+                    "# Sample Document" . '\n' . "Hello!" . '\n' . '\n' . "This is sample markdown for the [Mailchimp](https://www.mailchimp.com)homework assignment.",
+                    "<h1>Sample Document</h1><p>Hello!</p><p>This is sample markdown for the <a href=\"https://www.mailchimp.com\">Mailchimp</a>homework assignment.</p>"
+                ],
+            "test case 2" =>
+                [
+                    "# Header one" . '\n' . "Hello there " . '\n' . '\n' . "How are you?" . '\n' . "What's going on?" . '\n' . "## Another Header" . '\n' . "This is a paragraph [with an inline link](http://google.com). Neat, eh?" . '\n' . "## This is a header [with a link](http://yahoo.com)",
+                    "<h1>Header one</h1><p>Hello there </p><p>How are you?<br/>What's going on?</p><h2>Another Header</h2><p>This is a paragraph <a href=\"http://google.com\">with an inline link</a>. Neat, eh?</p><h2>This is a header <a href=\"http://yahoo.com\">with a link</a></h2>"
+                ],
+            "Header with Anchor with Strong" =>
+                [
+                   "# this is a header with [a link ***and strong tag***](link.com)",
+                    "<h1>this is a header with <a href=\"link.com\">a link <strong><em>and strong tag</em></strong></a></h1>"
+                ]
         ];
     }
 

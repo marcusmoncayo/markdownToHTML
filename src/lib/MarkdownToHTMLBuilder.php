@@ -10,7 +10,7 @@ class MarkdownToHTMLBuilder
     const NEW_LINE = '\n';
 
     private array $startTags = [HeaderTag::class];
-    private array $innerTags = [ParagraphTag::class,AnchorTag::class];
+    private array $innerTags = [ParagraphTag::class,AnchorTag::class,StrongTagClass::class];
     private array $htmlTags = [];
 
     /**
@@ -80,13 +80,14 @@ class MarkdownToHTMLBuilder
             $innerTag = new $innerTagClass($tag->getContent());
 
             if ($innerTag->isValid()) {
-                // if there is a valid inner tag replace the content for the parent tag
-                $tag->replaceContentInMarkdown($innerTag->getHTMLRepresentation());
 
                 // recursively call to ensure all inner tags are processed
                 if ($innerTag->getValidInnerTags()) {
-                    return $this->buildHTMLTag($innerTag);
+                    $this->buildHTMLTag($innerTag);
                 }
+
+                // if there is a valid inner tag replace the content for the parent tag
+                $tag->replaceContentInMarkdown($innerTag->getHTMLRepresentation());
 
                 return $this->buildHTMLTag($tag);
             }

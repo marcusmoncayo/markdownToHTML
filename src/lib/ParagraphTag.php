@@ -5,6 +5,7 @@
 
 class ParagraphTag implements Tag
 {
+
     private string $markdown;
     private string $regexPattern = "/[[:ascii:]]+/";
 

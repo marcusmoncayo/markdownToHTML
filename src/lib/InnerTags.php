@@ -7,9 +7,10 @@
     {
 
         $validInnerTags =  [
-            ParagraphTag::class => [AnchorTag::class],
-            AnchorTag::class => [],
-            HeaderTag::class => [AnchorTag::class]
+            ParagraphTag::class => [AnchorTag::class, StrongTagClass::class],
+            AnchorTag::class => [StrongTagClass::class],
+            HeaderTag::class => [AnchorTag::class],
+            StrongTagClass::class => []
         ];
 
         return $validInnerTags[$className];
