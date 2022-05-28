@@ -14,7 +14,7 @@ final class UtilitiesTest extends TestCase
     {
 
         $startTags = Utilities::getAllTagClasses();
-        $expected = [HeaderTag::class, AnchorTag::class];
+        $expected = [HeaderTag::class, AnchorTag::class, ParagraphTag::class];
 
         $this->assertEquals($expected, $startTags);
     }

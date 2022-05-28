@@ -5,7 +5,6 @@
 
 class AnchorTag implements Tag
 {
-
     private string $markdown;
 
     private string $regexAnchorText = "\[(.*?)\]";
@@ -146,7 +145,7 @@ class AnchorTag implements Tag
      */
     public function getValidInnerTags(): array
     {
-        return [];
+        return InnerTags::getValidInnerTagsForClass(self::class);
     }
 
     /**
