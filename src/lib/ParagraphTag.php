@@ -8,11 +8,8 @@ class ParagraphTag implements Tag
 
     private string $markdown;
     private string $regexPattern = "/[[:ascii:]]+/";
-    private bool $canContainInnerTags = true;
 
     private mixed $tags = ['start' => '<p>', 'end' => '</p>'];
-
-    private bool $isMergeable = true;
 
     public function __construct(string $markdown)
     {
@@ -25,15 +22,17 @@ class ParagraphTag implements Tag
      */
     public function isValid(): bool
     {
-        $linkStartRegex = "/^\[{1}[[:ascii:]]+\]{1}\({1}[[:ascii:]]*\){1}/";
-        $headerStartRegex = "/^\s{0,3}#{1,6}\s{1}/";
+        $tagClasses = array_diff(Utilities::getAllTagClasses(), [ParagraphTag::class]);
 
-        if (preg_match($linkStartRegex, $this->markdown)) {
-            return false;
-        }
+        foreach ($tagClasses as $tagClass) {
+            $tag = new $tagClass($this->getMarkdown());
+            $pattern = Utilities::PHP_REGEX_STARTS_WITH_DELIMETER . $tag->getPattern() . Utilities::PHP_REGEX_DELIMETER;
 
-        if (preg_match($headerStartRegex, $this->markdown)) {
-            return false;
+            $isValid = preg_match($pattern, $this->getMarkdown());
+
+            if ($isValid) {
+                return false;
+            }
         }
 
         return preg_match($this->regexPattern, $this->markdown) == true;
@@ -53,6 +52,20 @@ class ParagraphTag implements Tag
     }
 
     /**
+     * Returns HTML representation of the tag containing the merge tag
+     *
+     * @throws Exception
+     */
+    public function merge(Tag $tag): String
+    {
+        if (!$this->isMergeable() || !($tag instanceof ParagraphTag) || !$tag->isValid()) {
+            return $this->getHTMLRepresentation();
+        }
+
+        return $this->getStartTag() . $this->getContent() . "<br/>" . $tag->getContent() . $this->getEndTag();
+    }
+
+    /**
      * Replaces content in markdown with given string
      * @param string $htmlRepresentation
      * @return void
@@ -60,18 +73,6 @@ class ParagraphTag implements Tag
     public function replaceContentInMarkdown(string $htmlRepresentation): void
     {
         $this->setMarkdown(str_replace($this->getContent(), $htmlRepresentation, $this->getMarkdown()));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function merge(Tag $tag): String
-    {
-        if (!$this->isMergeable || !($tag instanceof ParagraphTag) || !$tag->isValid()) {
-            return $this->getHTMLRepresentation();
-        }
-
-         return $this->getStartTag() . $this->getContent() . "<br/>" . $tag->getContent() . $this->getEndTag();
     }
 
     /**
@@ -99,6 +100,37 @@ class ParagraphTag implements Tag
     }
 
     /**
+     * Returns content within Tag
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getContent(): string
+    {
+        return $this->markdown;
+    }
+
+    /**
+     * Returns regex Pattern
+     *
+     * @return string
+     */
+    public function getPattern(): string
+    {
+        return $this->regexPattern;
+    }
+
+    /**
+     * Returns true if tag is mergeable
+     *
+     * @return bool
+     */
+    public function isMergeable(): bool
+    {
+        return true;
+    }
+
+    /**
      * Returns a list of valid inner tags
      *
      * @return string[]
@@ -108,33 +140,24 @@ class ParagraphTag implements Tag
         return [AnchorTag::class];
     }
 
-    public function getPattern(): string
-    {
-        return $this->regexPattern;
-    }
-
-    public function canContainInnerTags(): bool
-    {
-        return $this->canContainInnerTags;
-    }
-
-    public function isMergeable(): bool
-    {
-        return $this->isMergeable;
-    }
-
+    /**
+     * Returns markdown
+     *
+     * @return string
+     */
     public function getMarkdown(): string
     {
         return $this->markdown;
     }
 
+    /**
+     * Sets markdown
+     *
+     * @param string $markdown
+     * @return void
+     */
     public function setMarkdown(string $markdown): void
     {
         $this->markdown = $markdown;
-    }
-
-    public function getContent(): string
-    {
-        return $this->markdown;
     }
 }

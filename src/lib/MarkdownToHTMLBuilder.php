@@ -75,10 +75,6 @@ class MarkdownToHTMLBuilder
             return $tag;
         }
 
-        if (!$tag->canContainInnerTags()) {
-            return $tag;
-        }
-
       // validate and update the markdown for all the inner tags
         foreach ($tag->getValidInnerTags() as $innerTagClass) {
             // exclude the markdown from the parent tag
@@ -87,7 +83,12 @@ class MarkdownToHTMLBuilder
             if ($innerTag->isValid()) {
                 // if there is a valid inner tag replace the content for the parent tag
                 $tag->replaceContentInMarkdown($innerTag->getHTMLRepresentation());
+
                 // recursively call to ensure all inner tags are processed
+                if ($innerTag->getValidInnerTags()) {
+                    return $this->buildHTMLTag($innerTag);
+                }
+
                 return $this->buildHTMLTag($tag);
             }
         }

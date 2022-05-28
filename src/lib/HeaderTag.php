@@ -8,11 +8,8 @@ class HeaderTag implements Tag
 
     private string $markdown;
 
-    private string $regexPattern = "/^\s{0,3}#{1,6}\s{1}/";
+    private string $regexPattern = "\s{0,3}#{1,6}\s{1}";
     private string $headerType = "";
-
-    private bool $canContainInnerTags = true;
-    private bool $isMergeable = false;
 
     private mixed $tags = [
     "#" => ['start' => '<h1>', 'end' => '</h1>'],
@@ -35,8 +32,9 @@ class HeaderTag implements Tag
     public function isValid(): bool
     {
         $matches = [];
+        $pattern = Utilities::PHP_REGEX_STARTS_WITH_DELIMETER . $this->regexPattern . Utilities::PHP_REGEX_DELIMETER;
 
-        if (preg_match($this->regexPattern, $this->markdown, $matches)) {
+        if (preg_match($pattern, $this->markdown, $matches)) {
             $this->headerType = trim($matches[0]);
             return true;
         }
@@ -57,9 +55,26 @@ class HeaderTag implements Tag
         throw new Exception("Markdown is not valid, please validate.");
     }
 
+    /**
+     * Cannot merge HeaderTags
+     *
+     * @param Tag $tag
+     * @return string
+     * @throws Exception
+     */
     public function merge(Tag $tag): string
     {
         throw new Exception("Cannot Merge Header Tag");
+    }
+
+    /**
+     * Replaces content in markdown with given string
+     * @param string $htmlRepresentation
+     * @return void
+     */
+    public function replaceContentInMarkdown($htmlRepresentation): void
+    {
+        $this->setMarkdown(str_replace($this->getContent(), $htmlRepresentation, $this->getMarkdown()));
     }
 
     /**
@@ -78,16 +93,6 @@ class HeaderTag implements Tag
     }
 
     /**
-     * Returns content within Header Tag
-     *
-     * @return string
-     */
-    public function getContent(): string
-    {
-        return preg_replace($this->getPattern(), '', $this->markdown);
-    }
-
-    /**
      * Returns trailing HTML tag
      *
      * @return string
@@ -103,13 +108,34 @@ class HeaderTag implements Tag
     }
 
     /**
-     * Replaces content in markdown with given string
-     * @param string $htmlRepresentation
-     * @return void
+     * Returns content within Header Tag
+     *
+     * @return string
      */
-    public function replaceContentInMarkdown($htmlRepresentation): void
+    public function getContent(): string
     {
-        $this->setMarkdown(str_replace($this->getContent(), $htmlRepresentation, $this->getMarkdown()));
+        return preg_replace(Utilities::PHP_REGEX_STARTS_WITH_DELIMETER . $this->getPattern() . Utilities::PHP_REGEX_DELIMETER, '', $this->markdown);
+    }
+
+    /**
+     *
+     * Returns regex pattern
+     *
+     * @return string
+     */
+    public function getPattern(): string
+    {
+        return $this->regexPattern;
+    }
+
+    /**
+     * Returns true if tag is mergeable
+     *
+     * @return bool
+     */
+    public function isMergeable(): bool
+    {
+        return false;
     }
 
     /**
@@ -120,21 +146,6 @@ class HeaderTag implements Tag
     public function getValidInnerTags(): array
     {
         return [AnchorTag::class];
-    }
-
-    public function canContainInnerTags(): bool
-    {
-        return $this->canContainInnerTags;
-    }
-
-    public function getPattern(): string
-    {
-        return $this->regexPattern;
-    }
-
-    public function isMergeable(): bool
-    {
-        return $this->isMergeable;
     }
 
     public function getMarkdown(): string

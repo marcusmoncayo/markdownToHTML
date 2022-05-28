@@ -8,16 +8,13 @@ class AnchorTag implements Tag
 
     private string $markdown;
 
-    private string $regexAnchorText = "/\[(.*?)\]/";
-    private string $regexAnchorUrlText = "/\((.*?)\)/";
-    private string $regexPattern = "/\[(.*?)\]\((.*?)\)/";
+    private string $regexAnchorText = "\[(.*?)\]";
+    private string $regexAnchorUrlText = "\((.*?)\)";
+    private string $regexPattern = "\[(.*?)\]\((.*?)\)";
 
     private string $startTagA = "<a href=\"";
     private string $startTagB = "\">";
     private string $endTag = "</a>";
-
-    private bool $canContainInnerTags = false;
-    private bool $isMergeable = false;
 
     public function __construct(string $markdown)
     {
@@ -30,7 +27,7 @@ class AnchorTag implements Tag
      */
     public function isValid(): bool
     {
-        return preg_match($this->regexPattern, $this->markdown) == true;
+        return preg_match(Utilities::PHP_REGEX_DELIMETER . $this->regexPattern . Utilities::PHP_REGEX_DELIMETER, $this->markdown) == true;
     }
 
     /**
@@ -39,22 +36,33 @@ class AnchorTag implements Tag
      */
     public function getHTMLRepresentation(): string
     {
-        $anchorRepresentation = $this->getStartTag() . $this->getContent() . $this->getEndTag();
-        return preg_replace($this->regexPattern, $anchorRepresentation, $this->markdown, 1);
+        if ($this->isValid()) {
+            $anchorRepresentation = $this->getStartTag() . $this->getContent() . $this->getEndTag();
+            return preg_replace(Utilities::PHP_REGEX_DELIMETER . $this->regexPattern . Utilities::PHP_REGEX_DELIMETER, $anchorRepresentation, $this->markdown, 1);
+        }
+
+        throw new Exception("Markdown is not valid, please validate.");
     }
 
     /**
+     * Cannot merge AnchorTags
      *
+     * @param Tag $tag
+     * @return string
+     * @throws Exception
+     */
+    public function merge(Tag $tag): string
+    {
+        throw new Exception("Cannot merge Anchor Tag");
+    }
+
+    /**
+     * Cannot replace content in AnchorTags
      * @throws Exception
      */
     public function replaceContentInMarkdown(string $markdown): void
     {
         throw new Exception("Cannot replace content of an Anchor Tag at this time");
-    }
-
-    public function merge(Tag $tag): string
-    {
-        throw new Exception("Cannot merge Anchor Tag");
     }
 
     /**
@@ -68,28 +76,9 @@ class AnchorTag implements Tag
         $matches = [];
 
         if ($this->isValid()) {
-            preg_match($this->regexAnchorUrlText, $this->markdown, $matches);
+            preg_match(Utilities::PHP_REGEX_DELIMETER . $this->regexAnchorUrlText . Utilities::PHP_REGEX_DELIMETER, $this->markdown, $matches);
             $url = substr($matches[0], 1, strlen($matches[0])-2);
             return $this->startTagA . $url . $this->startTagB;
-        }
-
-        throw new Exception("Markdown is not valid, please validate.");
-    }
-
-    /**
-     * Returns content within Tag
-     *
-     * @return string
-     * @throws Exception
-     */
-    public function getContent(): string
-    {
-        $matches = [];
-
-        if ($this->isValid()) {
-            preg_match($this->regexAnchorText, $this->markdown, $matches);
-            $text = substr($matches[0], 1, strlen($matches[0])-2);
-            return $text;
         }
 
         throw new Exception("Markdown is not valid, please validate.");
@@ -110,31 +99,72 @@ class AnchorTag implements Tag
         throw new Exception("Markdown is not valid, please validate.");
     }
 
-    public function getValidInnerTags(): array
+
+    /**
+     * Returns content within Tag
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getContent(): string
     {
-        return [];
+        $matches = [];
+
+        if ($this->isValid()) {
+            preg_match(Utilities::PHP_REGEX_DELIMETER . $this->regexAnchorText . Utilities::PHP_REGEX_DELIMETER, $this->markdown, $matches);
+            $text = substr($matches[0], 1, strlen($matches[0])-2);
+            return $text;
+        }
+
+        throw new Exception("Markdown is not valid, please validate.");
     }
 
-    public function canContainInnerTags(): bool
-    {
-        return $this->canContainInnerTags;
-    }
-
+    /**
+     * Returns regex Pattern
+     *
+     * @return string
+     */
     public function getPattern(): string
     {
         return $this->regexPattern;
     }
 
+    /**
+     * Returns true if tag is mergeable
+     *
+     * @return bool
+     */
     public function isMergeable(): bool
     {
-        return $this->isMergeable;
+        return false;
     }
 
+    /**
+     * Returns a list of valid inner tags
+     *
+     * @return string[]
+     */
+    public function getValidInnerTags(): array
+    {
+        return [];
+    }
+
+    /**
+     * Returns markdown
+     *
+     * @return string
+     */
     public function getMarkdown(): string
     {
         return $this->markdown;
     }
 
+    /**
+     * Sets markdown
+     *
+     * @param string $markdown
+     * @return void
+     */
     public function setMarkdown(string $markdown): void
     {
         $this->markdown = $markdown;
