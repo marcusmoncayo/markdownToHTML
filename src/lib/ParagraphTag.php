@@ -5,7 +5,6 @@
 
 class ParagraphTag implements Tag
 {
-
     private string $markdown;
     private string $regexPattern = "/[[:ascii:]]+/";
 
@@ -137,7 +136,7 @@ class ParagraphTag implements Tag
      */
     public function getValidInnerTags(): array
     {
-        return [AnchorTag::class];
+        return InnerTags::getValidInnerTagsForClass(self::class);
     }
 
     /**

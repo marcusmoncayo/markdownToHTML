@@ -5,7 +5,6 @@
 
 class HeaderTag implements Tag
 {
-
     private string $markdown;
 
     private string $regexPattern = "\s{0,3}#{1,6}\s{1}";
@@ -145,7 +144,7 @@ class HeaderTag implements Tag
      */
     public function getValidInnerTags(): array
     {
-        return [AnchorTag::class];
+        return InnerTags::getValidInnerTagsForClass(self::class);
     }
 
     public function getMarkdown(): string
