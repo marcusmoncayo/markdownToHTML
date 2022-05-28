@@ -72,9 +72,11 @@
     </service>
     <service id="App\Controller\MarkdownToHTMLController" class="App\Controller\MarkdownToHTMLController" autowire="true" autoconfigure="true"/>
     <service id="App\lib\AnchorTag" class="App\lib\AnchorTag" autowire="true" autoconfigure="true"/>
+    <service id="App\lib\BaseTag" class="App\lib\BaseTag" autowire="true" autoconfigure="true"/>
     <service id="App\lib\HeaderTag" class="App\lib\HeaderTag" autowire="true" autoconfigure="true"/>
     <service id="App\lib\MarkdownToHTMLBuilder" class="App\lib\MarkdownToHTMLBuilder" autowire="true" autoconfigure="true"/>
     <service id="App\lib\ParagraphTag" class="App\lib\ParagraphTag" autowire="true" autoconfigure="true"/>
+    <service id="App\lib\Utilities" class="App\lib\Utilities" autowire="true" autoconfigure="true"/>
     <service id="controller_resolver" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="service_container"/>
