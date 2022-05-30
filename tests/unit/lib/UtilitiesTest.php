@@ -5,6 +5,7 @@ namespace unit\lib;
 use App\lib\AnchorTag;
 use App\lib\HeaderTag;
 use App\lib\ParagraphTag;
+use App\lib\StrongTagClass;
 use App\lib\Utilities;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +15,7 @@ final class UtilitiesTest extends TestCase
     {
 
         $startTags = Utilities::getAllTagClasses();
-        $expected = [HeaderTag::class, AnchorTag::class, ParagraphTag::class];
+        $expected = [HeaderTag::class, AnchorTag::class, ParagraphTag::class, StrongTagClass::class];
 
         $this->assertEquals($expected, $startTags);
     }

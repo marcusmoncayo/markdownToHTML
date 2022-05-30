@@ -59,9 +59,9 @@ class AnchorTag implements Tag
      * Cannot replace content in AnchorTags
      * @throws Exception
      */
-    public function replaceContentInMarkdown(string $markdown): void
+    public function replaceContentInMarkdown(string $htmlRepresentation): void
     {
-        throw new Exception("Cannot replace content of an Anchor Tag at this time");
+        $this->setMarkdown(str_replace($this->getContent(), $htmlRepresentation, $this->getMarkdown()));
     }
 
     /**
